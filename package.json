@@ -1,0 +1,40 @@
+{
+  "name": "circle-translate-desktop",
+  "version": "1.0.0",
+  "description": "Desktop app dịch thuật bằng cách vẽ vòng tròn - hoạt động trên mọi ứng dụng",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron .",
+    "build": "electron-builder"
+  },
+  "keywords": [
+    "translation",
+    "ocr",
+    "electron",
+    "desktop"
+  ],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "electron": "^28.0.0",
+    "axios": "^1.6.0",
+    "@google-cloud/vision": "^4.0.0"
+  },
+  "devDependencies": {
+    "electron-builder": "^24.9.0"
+  },
+  "build": {
+    "appId": "com.circletranslate.app",
+    "productName": "Circle Translate",
+    "win": {
+      "target": [
+        "nsis"
+      ],
+      "icon": "icon.ico"
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true
+    }
+  }
+}

@@ -16,11 +16,11 @@
   "author": "",
   "license": "MIT",
   "dependencies": {
-    "electron": "^28.0.0",
     "axios": "^1.6.0",
     "@google-cloud/vision": "^4.0.0"
   },
   "devDependencies": {
+    "electron": "^28.0.0",
     "electron-builder": "^24.9.0"
   },
   "build": {

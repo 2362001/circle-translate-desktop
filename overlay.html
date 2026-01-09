@@ -78,6 +78,22 @@
         min-width: 250px;
         max-width: 400px;
         z-index: 10000;
+        transform: translate(-50%, calc(-100% - 15px));
+        pointer-events: auto; /* Cho phép tương tác để bấm nút đóng */
+      }
+
+      #close-btn {
+        position: absolute;
+        top: 8px;
+        right: 12px;
+        cursor: pointer;
+        font-size: 18px;
+        opacity: 0.7;
+        transition: opacity 0.2s;
+      }
+
+      #close-btn:hover {
+        opacity: 1;
       }
 
       .popup-word {
@@ -107,6 +123,7 @@
       >
     </div>
     <div id="popup">
+      <div id="close-btn" onclick="closeOverlay()">&times;</div>
       <div class="popup-word" id="popup-word"></div>
       <div class="popup-translation" id="popup-translation"></div>
     </div>
@@ -140,6 +157,12 @@
 
       // Mouse events
       overlay.addEventListener("mousedown", (e) => {
+        // Nếu click vào overlay (vùng trống) khi popup đang hiện thì đóng luôn
+        if (popup.style.display === "block") {
+          closeOverlay();
+          return;
+        }
+
         isDrawing = true;
         startX = e.clientX;
         startY = e.clientY;
@@ -189,7 +212,9 @@
         }
 
         // Show loading
-        showPopup("Đang nhận diện...", "", endX, endY, true);
+        const popupX = rectX + rectW / 2;
+        const popupY = rectY;
+        showPopup("Đang nhận diện...", "", popupX, popupY, true);
 
         // Send OCR request to main process
         ipcRenderer.send("ocr-request", {
@@ -197,8 +222,8 @@
           y: rectY,
           width: rectW,
           height: rectH,
-          popupX: endX,
-          popupY: endY,
+          popupX: popupX,
+          popupY: popupY,
         });
       });
 
@@ -238,8 +263,8 @@
           ? "popup-translation popup-loading"
           : "popup-translation";
 
-        popup.style.left = `${x + 15}px`;
-        popup.style.top = `${y + 15}px`;
+        popup.style.left = `${x}px`;
+        popup.style.top = `${y}px`;
         popup.style.display = "block";
       }
 
@@ -253,9 +278,6 @@
           popup.offsetLeft,
           popup.offsetTop
         );
-
-        // Auto close after 5 seconds
-        setTimeout(closeOverlay, 5000);
       });
 
       // Close overlay
